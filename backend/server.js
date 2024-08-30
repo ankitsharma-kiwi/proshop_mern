@@ -3,6 +3,7 @@ import connectDB from './config/db.js';
 import productRoutes from './routes/products.route.js'
 import userRoutes from './routes/users.route.js'
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 dotenv.config();
 const dbUrl = process.env.MONGO_URI
@@ -13,6 +14,9 @@ const app = express();
 // Body paser middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+
+// Cookie parser middleware
+app.use(cookieParser());
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
