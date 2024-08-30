@@ -60,7 +60,13 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 // @route POST /api/users/logout
 // @access Private
 export const logoutUser = asyncHandler(async (req, res) => {
-  res.json('logout user')
+  // For clear cookies, need to pass the key of cookie with empty value with, the expires current.
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  })
+
+  res.status(200).json({ message: 'Logged out successfully' });
 })
 
 // @desc Update user profile
