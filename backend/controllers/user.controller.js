@@ -1,8 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js'
 import User from '../models/user.model.js'
-import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
-dotenv.config()
+import { generateToken } from '../utils/index.js'
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -14,21 +12,9 @@ export const authUser = asyncHandler(async (req, res) => {
   const ddd = await user.matchPassword(password)
 
   if (user && (await user.matchPassword(password))) {
-    const token = jwt.sign(
-      { userId: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '30d',
-      }
-    )
+    // Generate token
+   const token = generateToken(res, user)
 
-    // Set Jwt cookies for HTTP-ONLY
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30d
-    })
     res.json({
       _id: user._id,
       name: user.name,
@@ -46,7 +32,32 @@ export const authUser = asyncHandler(async (req, res) => {
 // @route POST /api/users
 // @access public
 export const registerUser = asyncHandler(async (req, res) => {
-  res.json('register user')
+  const { name, email, password, isAdmin } = req.body
+
+  const userExists = await User.findOne({ email })
+  if (userExists) {
+    res.status(400)
+    throw new Error('User already exists')
+  }
+  const user = await User.create({
+    name,
+    email,
+    password,
+    isAdmin
+  })
+  if (user) {
+    const token = generateToken(res, user)
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid user data')
+  }
 })
 
 // @desc Get user profile
