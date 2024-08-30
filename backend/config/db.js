@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const connectDB = async (dbUrl) => {
-    console.log("dddd", dbUrl)
   try {
     const conn = await mongoose.connect(dbUrl, {
         useNewUrlParser: true,

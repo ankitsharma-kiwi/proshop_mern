@@ -3,7 +3,7 @@ import colors from 'colors';
 const notFound = (req, res, next) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(404);
-  console.log('yyyy', error.red.inverse);
+  console.log('not found error', error.red.inverse);
   next(error);
 };
 
@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
     message = "Resource not found";
     statusCode = 404;
   }
-  console.log('sss', err.name.red.inverse);
+  console.log('error handler function', err.name.red.inverse);
   res.status(statusCode).json({
     message,
     stack: process.env.NODE_ENV === "production" ? null : err.stack,

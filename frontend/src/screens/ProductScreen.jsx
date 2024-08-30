@@ -17,7 +17,7 @@ const ProductScreen = () => {
   const navigate = useNavigate()
 
   const addToCartHandler = () => {
-    dispatch(addToCart({ ...product, qty }))
+    dispatch(addToCart({ ...product, qty: Number(qty) }))
     navigate('/cart')
   }
 
