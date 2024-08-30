@@ -1,5 +1,8 @@
 import asyncHandler from '../middleware/asyncHandler.js'
 import User from '../models/user.model.js'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -8,14 +11,30 @@ export const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
-  const ddd = await user.matchPassword(password);
+  const ddd = await user.matchPassword(password)
 
-  if(user && (await user.matchPassword(password))) {
+  if (user && (await user.matchPassword(password))) {
+    const token = jwt.sign(
+      { userId: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '30d',
+      }
+    )
+
+    // Set Jwt cookies for HTTP-ONLY
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30d
+    })
     res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token
     })
   } else {
     res.status(401)
