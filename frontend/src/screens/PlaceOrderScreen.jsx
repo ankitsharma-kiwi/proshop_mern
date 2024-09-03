@@ -25,9 +25,9 @@ const PlaceOrderScreen = () => {
     }
   }, [cart.paymentMethod, cart.shippingAddress.address, navigate])
 
+  console.log('dddd', cart.itemsPrice);
+
   const placeOrderHandler = () => {
-    // Handle place order logic here
-    console.log('Place Order')
     createOrder({
       orderItems: cart.cartItems,
       shippingAddress: cart.shippingAddress,
