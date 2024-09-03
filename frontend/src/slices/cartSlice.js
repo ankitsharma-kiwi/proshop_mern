@@ -27,7 +27,8 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = []
-      localStorage.removeItem('cart')
+      state.shippingAddress = {};
+      return updateCart(state);
     },
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload
