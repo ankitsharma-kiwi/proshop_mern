@@ -6,7 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useUpdateProfileMutation } from '../slices/usersApiSlice'
 import { setCredentials } from '../slices/authSlice'
-import { useGetOrdersQuery } from '../slices/orderApiSlices'
+import { useGetMyOrdersQuery } from '../slices/orderApiSlices'
 import { Link } from 'react-router-dom'
 import { FaTimes } from 'react-icons/fa'
 
@@ -17,7 +17,7 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const dispatch = useDispatch()
-  const { data, isError, isLoading } = useGetOrdersQuery()
+  const { data, isError, isLoading } = useGetMyOrdersQuery()
   const [updateProfile, { isLoading: loadingUpdateProfile }] = useUpdateProfileMutation()
 
   const { userInfo } = useSelector((state) => state.auth)
