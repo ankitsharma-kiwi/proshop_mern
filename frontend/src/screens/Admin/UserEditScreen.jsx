@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Form, Button, Row, Col, Image } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
 import FormContainer from '../../components/FormContainer'
@@ -11,11 +10,10 @@ import { useGetUserDetailsQuery, useUpdateUserMutation } from '../../slices/user
 const UserEditScreen = () => {
   const { id: userId } = useParams()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
-  const { data: user, refetch, isLoading, error } = useGetUserDetailsQuery(userId)
+  const { data: user, isLoading, error } = useGetUserDetailsQuery(userId)
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation()
   useEffect(() => {
     if (user) {

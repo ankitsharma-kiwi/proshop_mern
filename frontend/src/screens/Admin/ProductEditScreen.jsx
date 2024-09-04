@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Form, Button, Card, Row, Col, Image } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { Form, Button, Row, Col, Image } from 'react-bootstrap'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
 import FormContainer from '../../components/FormContainer'
@@ -15,7 +14,6 @@ import {
 const ProductEditScreen = () => {
   const { id: productId } = useParams()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
@@ -23,7 +21,6 @@ const ProductEditScreen = () => {
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
   const [countInStock, setCountInStock] = useState(0)
-  const [uploading, setUploading] = useState(false)
   const { data: product, isLoading, error } = useGetProductDetailsQuery(productId)
   const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation()
   const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation()
@@ -63,20 +60,16 @@ const ProductEditScreen = () => {
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('image', file)
-    setUploading(true)
-
     try {
       const res = await uploadProductImage(formData).unwrap()
       toast.success(res.message)
       setImage(res.image)
-      setUploading(false)
     } catch (err) {
       toast.error(err?.data?.message || err.message || err)
-      setUploading(false)
     }
   }
 
-  if (isLoading || loadingUpdate) {
+  if (isLoading || loadingUpdate || loadingUpload) {
     return <Loader />
   }
   if (error) {
@@ -86,7 +79,6 @@ const ProductEditScreen = () => {
     return <Message variant="danger">Product not found</Message>
   }
 
-  console.log('ppp', product)
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
