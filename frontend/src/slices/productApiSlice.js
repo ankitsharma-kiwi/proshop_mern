@@ -15,6 +15,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
                 url: `${PRODUCTS_URL}/${productId}`,
             }),
             keepUnusedDataFor: 5,
+            providesTags: ['Product']
         }),
         createProduct: builder.mutation({
             query: () => ({

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Card, Row, Col, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
@@ -117,13 +117,20 @@ const ProductEditScreen = () => {
 
           <Form.Group className="my-2" controlId="image">
             <Form.Label>Image URL</Form.Label>
-            <Form.Control
+            {/* <Form.Control
               type="text"
               placeholder="Enter image URL"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-            ></Form.Control>
-            <Form.Control type="file" label="Choose File" onChange={uploadFileHandler}></Form.Control>
+            ></Form.Control> */}
+            <Row>
+              <Col md={4}>
+                <Image src={image} alt={name} fluid rounded />
+              </Col>
+              <Col md={8}>
+                <Form.Control type="file" label="Choose File" onChange={uploadFileHandler}></Form.Control>
+              </Col>
+            </Row>
           </Form.Group>
 
           <Form.Group className="my-2" controlId="brand">
