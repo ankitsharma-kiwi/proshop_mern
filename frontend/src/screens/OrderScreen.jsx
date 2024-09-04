@@ -78,7 +78,7 @@ const OrderScreen = () => {
   
       toast.success('Order is paid');
     } catch (error) {
-      toast.error(error?.data?.message || error.error || error);
+      toast.error(error?.data?.message || error?.error || error);
     }
   }
 
@@ -105,7 +105,7 @@ const OrderScreen = () => {
       await deliverOrder(orderId);
       refetch();
     } catch (error) {
-      toast.error(error?.data?.message || error.error || error);
+      toast.error(error?.data?.message || error?.error || error);
     }
    
   };
