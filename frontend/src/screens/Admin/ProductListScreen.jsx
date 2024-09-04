@@ -1,16 +1,35 @@
 import React from 'react'
-import { useGetProductsQuery } from '../../slices/productApiSlice'
+import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation } from '../../slices/productApiSlice'
 import { Button, Col, Row, Table } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import Loader from '../../components/Loader'
 import Message from '../../components/Message'
 import { LinkContainer } from 'react-router-bootstrap'
+import { toast } from 'react-toastify'
 
 const ProductListScreen = () => {
   const { data: products, isLoading, error } = useGetProductsQuery()
+  const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation()
+  const [deleteProduct, { isLoading: deleteLoading }] = useDeleteProductMutation()
 
-  const deleteHandler = (id) => {
-    console.log(id)
+  const deleteHandler = async (id) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        await deleteProduct(id).unwrap()
+      } catch (error) {
+        toast.error(error?.data?.message || error.message || error)
+      }
+    }
+  }
+
+  const createProductHandler = async () => {
+    if (window.confirm('Are you sure you want to create a new product?')) {
+      try {
+        await createProduct().unwrap()
+      } catch (error) {
+        toast.error(error?.data?.message || error.message || error)
+      }
+    }
   }
 
   return (
@@ -18,10 +37,11 @@ const ProductListScreen = () => {
       <Row className="align-item-center">
         <Col>Products</Col>
         <Col className="text-end">
-          <Button>
+          <Button onClick={createProductHandler}>
             <FaEdit /> Create Product
           </Button>
         </Col>
+        {(deleteLoading || loadingCreate) && <Loader />}
         {isLoading ? (
           <Loader />
         ) : error ? (
@@ -48,7 +68,7 @@ const ProductListScreen = () => {
                     <td>{product.category}</td>
                     <td>{product.brand}</td>
                     <td>
-                      <LinkContainer to={`admin/product/${product._id}/edit`}>
+                      <LinkContainer to={`/admin/product/${product._id}/edit`}>
                         <Button variant="light" className="btn-sm">
                           <FaEdit />
                         </Button>
