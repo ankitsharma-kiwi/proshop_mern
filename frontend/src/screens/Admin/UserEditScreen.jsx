@@ -37,7 +37,7 @@ const UserEditScreen = () => {
       toast.error(result.error.message)
     } else {
       toast.success('Product updated successfully')
-      navigate('/admin/productlist')
+      navigate('/admin/userlist')
     }
   }
 
@@ -53,7 +53,7 @@ const UserEditScreen = () => {
 
   return (
     <>
-      <Link to="/admin/productlist" className="btn btn-light my-3">
+      <Link to="/admin/userlist" className="btn btn-light my-3">
         Go Back
       </Link>
       <FormContainer>
