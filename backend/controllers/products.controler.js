@@ -3,7 +3,7 @@ import Product from '../models/product.model.js'
 
 export const getProducts = asyncHandler(
   async (req, res) => {
-    const pageSize = 10
+    const pageSize = 1
     const page = Number(req.query.pageNumber) || 1
     const keyword = req.query.keyword
       ? {
@@ -118,4 +118,10 @@ export const createProductReview = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('Product not found')
   }
+})
+
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3)
+
+  res.status(200).json(products)
 })
