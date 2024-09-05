@@ -10,6 +10,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { addToCart } from '../slices/cartSlice'
 import { useState } from 'react'
+import Meta from '../components/Meta'
 
 const ProductScreen = () => {
   const { id: productId } = useParams()
@@ -46,6 +47,7 @@ const ProductScreen = () => {
         <Message variant={'danger'}>{error?.data?.message}</Message>
       ) : (
         <>
+        <Meta title={product.name} description={product.description} />
           <Link to="/" className="btn btn-light my-3">
             Go Back
           </Link>
