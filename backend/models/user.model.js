@@ -17,14 +17,17 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
+    enum: ['user', 'admin', 'editor'],
     default: 'user',
   },
   isAdmin: {
     type: Boolean,
-    required: true,
     default: false,
   },
+  isEditor: {
+    type: Boolean,
+    default: false,
+  }
 }, {
   timestamps: true,
 });

@@ -20,6 +20,7 @@ export const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isEditor: user.isEditor,
       token
     })
   } else {
@@ -32,7 +33,7 @@ export const authUser = asyncHandler(async (req, res) => {
 // @route POST /api/users
 // @access public
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, isAdmin } = req.body
+  const { name, email, password, isAdmin = false, isEditor = false } = req.body
 
   const userExists = await User.findOne({ email })
   if (userExists) {
@@ -43,7 +44,8 @@ export const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    isAdmin
+    isAdmin,
+    isEditor
   })
   if (user) {
     const token = generateToken(res, user)
@@ -52,6 +54,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isEditor: user.isEditor,
       token
     })
   } else {
@@ -70,7 +73,8 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
+      isEditor: user.isEditor
     })
   } else {
     res.status(404)
@@ -110,7 +114,8 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin
+      isAdmin: updatedUser.isAdmin,
+      isEditor: updatedUser.isEditor
     })
   } else {
     res.status(404)
@@ -163,11 +168,12 @@ export const deleteUser = asyncHandler(async (req, res) => {
 // @access Private/Admin
 export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
-  const { name, email, isAdmin } = req.body
+  const { name, email, isAdmin, isEditor } = req.body
   if (user) {
     user.name = name || user.name
     user.email = email || user.email
     user.isAdmin = Boolean(isAdmin)
+    user.isEditor = Boolean(isEditor)
 
     const updatedUser = await user.save()
 
@@ -175,7 +181,8 @@ export const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin
+      isAdmin: updatedUser.isAdmin,
+      isEditor: updatedUser.isEditor
     })
   } else {
     res.status(404)
