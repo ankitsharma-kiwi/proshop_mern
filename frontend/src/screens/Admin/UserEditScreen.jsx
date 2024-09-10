@@ -13,6 +13,7 @@ const UserEditScreen = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isEditor, setIsEditor] = useState(false)
   const { data: user, isLoading, error } = useGetUserDetailsQuery(userId)
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation()
   useEffect(() => {
@@ -20,6 +21,7 @@ const UserEditScreen = () => {
       setName(user.name)
       setEmail(user.email)
       setIsAdmin(user.isAdmin)
+      setIsEditor(user.isEditor)
     }
   }, [user])
   const submitHandler = async (e) => {
@@ -29,6 +31,7 @@ const UserEditScreen = () => {
       name,
       email,
       isAdmin,
+      isEditor,
     }
     const result = await updateUser(updatedProduct)
     if (result.error) {
@@ -83,6 +86,14 @@ const UserEditScreen = () => {
               label="Is Admin"
               checked={isAdmin}
               onChange={(e) => setIsAdmin(e.target.checked)}
+            ></Form.Check>
+          </Form.Group>
+          <Form.Group className="my-2" controlId="isAdmin">
+            <Form.Check
+              type="checkbox"
+              label="Is Editor"
+              checked={isEditor}
+              onChange={(e) => setIsEditor(e.target.checked)}
             ></Form.Check>
           </Form.Group>
           <Button type="submit" variant="primary" className="mt-2">

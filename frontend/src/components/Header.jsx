@@ -1,7 +1,7 @@
 import { NavDropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap'
-import { FaShoppingCart, FaUser } from 'react-icons/fa'
+import { FaEdit, FaShoppingCart, FaUser } from 'react-icons/fa'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useLogoutMutation } from '../slices/usersApiSlice'
 import { logout } from '../slices/authSlice'
@@ -38,6 +38,13 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <SearchBox />
+              {userInfo && userInfo.isEditor && (
+                <LinkContainer to="/image/editor">
+                  <Nav.Link>
+                    <FaEdit /> Editor
+                  </Nav.Link>
+                </LinkContainer>
+              )}
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <FaShoppingCart /> Cart

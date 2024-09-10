@@ -7,14 +7,12 @@ import { Link } from 'react-router-dom'
 
 const ProductCarousel = () => {
   const { data: products, isLoading, error } = useGetTopProductsQuery()
-  console.log(products)
   if (isLoading) {
     return <Loader />
   }
   if (error) {
     return <Message variant={'danger'}>{error?.data?.message}</Message>
   }
-  console.log(products)
   return (
     <Carousel pause="hover" className="bg-primary mb-4">
       {products?.map((product) => (

@@ -26,6 +26,12 @@ import ProductListScreen from './screens/Admin/ProductListScreen'
 import ProductEditScreen from './screens/Admin/ProductEditScreen'
 import UserListScreen from './screens/Admin/UserListScreen'
 import UserEditScreen from './screens/Admin/UserEditScreen'
+import ImageEditorScreen from './screens/ImageEditor/ImageEditorScreen'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faImage, faFont, faPencil, faFilter, faTrash, faDownload } from '@fortawesome/free-solid-svg-icons'
+import EditorRoute from './components/EditorRoute'
+
+library.add(faImage, faFont, faPencil, faFilter, faTrash, faDownload)
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +52,11 @@ const router = createBrowserRouter(
         <Route path="/placeorder" element={<PlaceOrderScreen />} />
         <Route path="/order/:id" element={<OrderScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
+      </Route>
+
+      {/* Editor Route */}
+      <Route path="/image" element={<EditorRoute />}>
+        <Route path="/image/editor" element={<ImageEditorScreen />} />
       </Route>
 
       {/* Admin Routes */}
