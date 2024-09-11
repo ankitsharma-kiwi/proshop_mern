@@ -30,6 +30,7 @@ import ImageEditorScreen from './screens/ImageEditor/ImageEditorScreen'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faImage, faFont, faPencil, faFilter, faTrash, faDownload } from '@fortawesome/free-solid-svg-icons'
 import EditorRoute from './components/EditorRoute'
+import DragDropScreen from './screens/DragDrop/DragDropScreen'
 
 library.add(faImage, faFont, faPencil, faFilter, faTrash, faDownload)
 
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+      <Route path="/drag-drop" element={<DragDropScreen />} />
 
       {/* Private Routes */}
       <Route path="" element={<PrivateRoute />}>
